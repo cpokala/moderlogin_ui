@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold( 
-      backgroundColor: const Color.fromARGB(255, 241, 237, 237),
+      backgroundColor: const Color.fromARGB(255, 156, 122, 166),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
               ),
 
 
-
+ 
               const SizedBox(height: 25),
 
               // username textfield

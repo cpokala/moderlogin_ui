@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "252463646565",
+    "project_id": "modernlogintute-dc4b8",
+    "storage_bucket": "modernlogintute-dc4b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252463646565:android:9f12ae83e2d9991f6b838c",
+        "android_client_info": {
+          "package_name": "com.example.modernlogintute"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcMopMJx-HxauU_ykczm3M9AdjBVc6PdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

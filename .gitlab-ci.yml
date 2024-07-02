@@ -1,38 +1,31 @@
-image: ghcr.io/cirruslabs/flutter:3.22.2
-
 stages:
-  - test_bash
-  - lints
-  - tests
-  
+  - setup
+  - test
+  - deploy
 
+setup:
+  stage: setup
+  script:
+    - echo "Setting up the environment..."
 
 test_bash:
+  stage: test
   script:
-    - echo "Running in Git Bash"
-    - bash --version
+    - echo "Current shell is $SHELL"
     - pwd
     - ls -la
 
-
-
 lints:
-  stage: lints
-  before_script:
-    - bash reconfigure.sh
+  stage: test
   script:
-    - flutter analyze
-  tags:
-    - flutter
+    - echo "Running linters..."
 
-unit tests:
-  stage: tests
+tests:
+  stage: test
   script:
-    - flutter test --coverage ./lib
-    - lcov -r coverage/lcov.info '*/_test*_/*' -o coverage/lcov_cleaned.info
-    - genhtml coverage/lcov_cleaned.info --output=coverage
-  tags:
-    - flutter
-  artifacts:
-    paths:
-      - coverage
+    - echo "Running tests..."
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying application..."

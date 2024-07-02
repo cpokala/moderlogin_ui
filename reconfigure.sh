@@ -4,4 +4,4 @@ find . -type f -name '*.g.dart' -print -delete && find . -type f -name '*.freeze
 flutter clean
 rm pubspec.lock
 flutter pub get
-flutter pacakges pub run build_runner build -delete-conflicting-outputs
+flutter packages pub run build_runner build --delete-conflicting-outputs 

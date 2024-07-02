@@ -1,9 +1,20 @@
 image: ghcr.io/cirruslabs/flutter:3.22.2
 
 stages:
+  - test_bash
   - verify
   - lints
   - tests
+  
+
+
+test_bash:
+  script:
+    - echo "Running in Git Bash"
+    - bash --version
+    - pwd
+    - ls -la
+
 
 verify_shell:
   stage: verify

@@ -1,8 +1,17 @@
 image: ghcr.io/cirruslabs/flutter:3.22.2
 
 stages:
+  - verify
   - lints
   - tests
+
+verify_shell:
+  stage: verify
+  script:
+    - echo "Running on $(uname -m) with shell $(echo $SHELL)"
+    - bash --version
+  tags:
+    - flutter
 
 lints:
   stage: lints

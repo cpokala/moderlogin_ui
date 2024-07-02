@@ -1,0 +1,28 @@
+image : docker pull ghcr.io/cirruslabs/flutter:3.22.2
+
+stages:
+  - lints
+  - tests
+
+
+lints:
+ stage: lints
+ before_script: 
+  - bash reconfigure.sh
+ script: 
+  - flutter analyze 
+ tags:
+  - flutter 
+
+
+unit tests:
+ stage: tests
+ script: 
+  - flutter test --coverage ./lib
+  - lcov -r coverage/lcov.info '*/_test*_/*' -o coverage/lcov_cleaned.info
+  - genhtml coverage/lcov_cleaned.info --output=coverage 
+ tags:
+  - flutter 
+ artifacts:
+  paths:
+    - coverage

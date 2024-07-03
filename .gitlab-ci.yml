@@ -1,6 +1,10 @@
 build:
   stage: build
   script:
+    - 'echo $env:PATH'  # This will print the PATH environment variable in PowerShell
+    - 'git --version'   # This will confirm if Git can be accessed
+    - 'flutter pub get' # Continue with your Flutter commands
+
     - 'Write-Host "Running build tasks"'
     - 'flutter pub get'
     - 'flutter gen-l10n; flutter test'
@@ -10,3 +14,4 @@ build:
   artifacts:
     paths:
       - build/app/outputs/flutter-apk/app-release.apk
+

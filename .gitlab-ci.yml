@@ -20,3 +20,6 @@ build:
     paths:
     - build/app/outputs/flutter-apk/app-release.apk
 
+cache:
+  paths:
+    - .pub-cache/

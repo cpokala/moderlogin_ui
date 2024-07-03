@@ -1,31 +1,22 @@
+image: ghcr.io/cirruslabs/flutter:3.22.2
+
 stages:
-  - setup
-  - test
-  - deploy
+  - build
 
-setup:
-  stage: setup
-  script:
-    - echo "Setting up the environment..."
+build:
+  only:
+      - master
 
-test_bash:
-  stage: test
-  script:
-    - echo "Current shell is $SHELL"
-    - pwd
-    - ls -la
+  stage: build
 
-lints:
-  stage: test
   script:
-    - echo "Running linters..."
+    - flutter pub get
+    - flutter gen-l10n && flutter test
+    - flutter build apk --debug
+    - flutter build apk --profile
+    - flutter build apk --release
 
-tests:
-  stage: test
-  script:
-    - echo "Running tests..."
+  artifacts:
+    paths:
+    - build/app/outputs/flutter-apk/app-release.apk
 
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploying application..."

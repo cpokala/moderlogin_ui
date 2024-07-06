@@ -48,3 +48,8 @@ app.*.map.json
 
 # Ignore Gradle build output directory
 build
+
+
+# Keystore files
+release-keystore.jks
+release-keystore.properties

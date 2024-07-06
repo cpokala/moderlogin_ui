@@ -1,17 +1,27 @@
-build:
-  stage: build
-  script:
-    - 'echo $env:PATH'  # This will print the PATH environment variable in PowerShell
-    - 'git --version'   # This will confirm if Git can be accessed
-    - 'flutter pub get' # Continue with your Flutter commands
+image: ghcr.io/cirruslabs/flutter:3.22.2
 
-    - 'Write-Host "Running build tasks"'
-    - 'flutter pub get'
-    - 'flutter gen-l10n; flutter test'
-    - 'flutter build apk --debug'
-    - 'flutter build apk --profile'
-    - 'flutter build apk --release'
+stages:
+  - build
+
+build:
+  only:
+      - master
+
+  stage: build
+
+  script:
+    - flutter pub get
+    - flutter gen-l10n && flutter test
+    - flutter build apk --debug
+    - flutter build apk --profile
+    - flutter build apk --release
+
   artifacts:
     paths:
-      - build/app/outputs/flutter-apk/app-release.apk
+    - build/app/outputs/flutter-apk/app-release.apk
 
+test:
+  image: fabernovel/android:api-33-v1.7.0
+  stage: test
+  script:
+    - fastlane test

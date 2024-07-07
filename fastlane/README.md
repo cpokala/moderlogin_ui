@@ -13,19 +13,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-## iOS
-
-### ios custom_lane
-
-```sh
-[bundle exec] fastlane ios custom_lane
-```
-
-Description of what the lane does
-
-----
-
-
 ## Android
 
 ### android test
@@ -59,6 +46,19 @@ Create and sign a new build
 ```
 
 Submit a new Beta Build to the Google Play store
+
+----
+
+
+## iOS
+
+### ios custom_lane
+
+```sh
+[bundle exec] fastlane ios custom_lane
+```
+
+Description of what the lane does
 
 ----
 

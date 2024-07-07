@@ -1,21 +1,9 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:android)
 
 platform :android do
   desc "Runs all the tests"
   lane :test do
-    sh("./gradlew test") # Using sh to explicitly call gradlew
+    gradle(task: "test")
   end
 
   desc "Increment version code"
@@ -27,7 +15,7 @@ platform :android do
 
   desc "Create and sign a new build"
   lane :build do
-    sh("./gradlew clean assembleRelease bundleRelease") # Using sh to explicitly call gradlew
+    gradle(tasks: ["clean", "assembleRelease", "bundleRelease"])
   end
 
   desc "Submit a new Beta Build to the Google Play store"
@@ -40,10 +28,3 @@ platform :android do
   end
 end
 
-# iOS platform configuration remains unchanged
-platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
-  end
-end

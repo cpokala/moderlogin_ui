@@ -1,8 +1,7 @@
 image: ghcr.io/cirruslabs/flutter:3.22.2
+
 stages:
-  - test
   - build
-  - beta
 
 cache:
   key:
@@ -15,20 +14,18 @@ before_script:
   - bundle check --path vendor/bundle || bundle install --path vendor/bundle --jobs $(nproc)
 
 test:
-  image: fabernovel/android:api-33-v1.7.0
   stage: test
   script:
     - bundle exec fastlane test
 
 build:
-  image: fabernovel/android:api-33-v1.7.0
   stage: build
-  variables:
-    SECURE_FILES_DOWNLOAD_PATH: './'
   script:
-    - apt update -y && apt install -y curl
-    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
-    - bundle exec fastlane build
+    # - apt update -y && apt install -y curl
+    # - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    # - bundle exec fastlane build
+    - flutter pub get 
+    - flutter build apk
   artifacts:
     paths:
       - app/build/outputs/bundle/release/app-release.aab

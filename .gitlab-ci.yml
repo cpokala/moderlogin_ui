@@ -3,7 +3,6 @@ image: ghcr.io/cirruslabs/flutter:3.22.2
 stages:
   - test
   - build
-  - beta
 
 cache:
   key:
@@ -34,11 +33,3 @@ build:
   artifacts:
     paths:
       - app/build/outputs/bundle/release/app-release.aab
-
-beta:
-  image: fabernovel/android:api-33-v1.7.0
-  stage: beta
-  script:
-    - bundle exec fastlane beta
-  when: manual
-  allow_failure: true

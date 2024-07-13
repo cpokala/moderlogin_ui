@@ -1,36 +1,24 @@
-image: ghcr.io/cirruslabs/flutter:3.22.2
-
 stages:
   - test
   - build
-
-
-cache:
-  key:
-    files:
-      - Gemfile.lock
-  paths:
-    - vendor/bundle
+ 
 
 before_script:
-  - bundle check --path vendor/bundle || bundle install --path vendor/bundle --jobs $(nproc)
-
+  - gem install fastlane -NV
+  - fastlane add_plugin versioning
 
 test:
+  image: ghcr.io/cirruslabs/flutter:3.22.2
   stage: test
   script:
-    - powershell -Command "bundle exec fastlane test"
+    - bundle exec fastlane test
 
 build:
+  image: ghcr.io/cirruslabs/flutter:3.22.2
   stage: build
-  only:
-    - master
   script:
-    - powershell -Command "flutter pub get"
-    - powershell -Command "flutter gen-l10n; flutter test"
-    - powershell -Command "flutter build apk --debug"
-    - powershell -Command "flutter build apk --profile"
-    - powershell -Command "flutter build apk --release"
+    - bundle exec fastlane build
   artifacts:
     paths:
       - app/build/outputs/bundle/release/app-release.aab
+

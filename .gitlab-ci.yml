@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-  - powershell -Command "choco install ruby -y"
+  - powershell -Command "$env:PATH += ';C:\ProgramData\chocolatey\bin'; choco install ruby -y"
   - powershell -Command "gem install bundler"
   - powershell -Command "if (!(bundle check --path vendor/bundle)) { bundle install --path vendor/bundle --jobs [Environment]::ProcessorCount }"
 

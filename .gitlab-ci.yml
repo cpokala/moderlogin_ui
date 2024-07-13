@@ -18,6 +18,12 @@ test:
   stage: test
   script:
     - bundle exec fastlane test
+  tags: 
+    - docker
+    - flutter 
+    - flutter_ios
+    - flutter_web
+
 
 build:
   stage: build
@@ -33,3 +39,9 @@ build:
   artifacts:
     paths:
       - app/build/outputs/bundle/release/app-release.aab
+
+  tags: 
+    - docker
+    - flutter 
+    - flutter_ios
+    - flutter_web

@@ -4,6 +4,7 @@ stages:
  
 
 before_script:
+  - powershell -File setup_environment.ps1
   - gem install fastlane -NV
   - fastlane add_plugin versioning
 

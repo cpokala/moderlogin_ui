@@ -4,15 +4,11 @@ stages:
   - test
   - build
 
-cache:
-  key:
-    files:
-      - Gemfile.lock
-  paths:
-    - vendor/bundle
-
 before_script:
-  - powershell -Command "if (!(bundle check --path vendor/bundle)) { bundle install --path vendor/bundle --jobs $(nproc) }"
+  - powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+  - powershell -Command "choco install ruby -y"
+  - powershell -Command "gem install bundler"
+  - powershell -Command "if (!(bundle check --path vendor/bundle)) { bundle install --path vendor/bundle --jobs [Environment]::ProcessorCount }"
 
 test:
   stage: test

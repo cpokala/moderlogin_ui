@@ -4,7 +4,6 @@ stages:
  
 
 before_script:
-  - ruby -v
   - gem install fastlane -NV
   - fastlane add_plugin versioning
 

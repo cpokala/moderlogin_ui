@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alleralert.iu"  // Ensure this line is included
+    namespace = "com.alleralert.iu"  
     compileSdk = 31
 
     defaultConfig {
@@ -36,6 +36,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.21")  // Add this line
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.21")  // Add this line
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

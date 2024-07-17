@@ -6,7 +6,7 @@ stages:
 before_script:
   - $env:PATH = "C:\Ruby33-x64\bin;$env:PATH"
   - gem install fastlane -NV
-  - fastlane --version # This line is just to check that Fastlane is recognized now
+  - fastlane --version 
 
 test:
   image: ghcr.io/cirruslabs/flutter:3.22.2

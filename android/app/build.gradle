@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.modernlogintute"
-        minSdkVersion = 23 // Updated minSdkVersion from flutter.minSdkVersion to 23
+        minSdkVersion = 19 // Updated minSdkVersion from flutter.minSdkVersion to 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName

@@ -1,11 +1,21 @@
+// This block must come first
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Define your plugins
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
+    id 'com.google.gms.google-services'  // Ensure this plugin is applied if you're using Firebase
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.protobuf"     apply false // Applying Protobuf plugin without immediately configuring it
 }
+
+apply plugin: 'com.google.protobuf' // Apply the protobuf plugin after specifying it in the buildscript
+apply plugin: 'kotlin-android'
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('release-keystore.properties')
@@ -21,20 +31,15 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
-}
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode", "1")
+def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0")
 
 android {
     namespace = "com.example.modernlogintute"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -43,42 +48,60 @@ android {
 
     defaultConfig {
         applicationId = "com.example.modernlogintute"
-        minSdkVersion = 19 // Updated minSdkVersion from flutter.minSdkVersion to 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     signingConfigs {
         release {
-   	 keyAlias keystoreProperties['keyAlias']
-   	 keyPassword keystoreProperties['keyPassword']
-   	 storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-   	 storePassword keystoreProperties['storePassword']
-                }
-               }
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
-             signingConfig signingConfigs.release
-             minifyEnabled true
-             shrinkResources true
-             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22" 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22" 
-
-    // Kotlin test dependencies
-    testImplementation "org.jetbrains.kotlin:kotlin-test"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
-
-    // JUnit dependencies
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
+    // Ensure protobuf dependencies are correctly declared
+    implementation 'com.google.protobuf:protobuf-java:3.11.0'
 }
 
-flutter {
-    source = "../.."
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.11.0'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+            task.plugins {
+                grpc {
+                    option 'lite'
+                }
+            }
+        }
+    }
 }

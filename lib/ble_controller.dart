@@ -34,7 +34,7 @@ class BleController extends GetxController {
           // "Device Disconnected"
           break;
         default:
-          // "Device State Changed: $state"
+          // "Device State Changed: $state"print('print('');');
           break;
       }
     });

@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.alleralert.iu"  
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.alleralert.iu"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

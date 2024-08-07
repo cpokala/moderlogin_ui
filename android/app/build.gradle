@@ -1,58 +1,65 @@
-// This block must come first
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-// Define your plugins
 plugins {
-    id 'com.google.gms.google-services'  // Ensure this plugin is applied if you're using Firebase
-    id "com.google.protobuf"     apply false // Applying Protobuf plugin without immediately configuring it
-    id "com.android.application" version "7.3.0" apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
-    // Add flutter plugin as recommended in the migration guide
-}
-
-apply plugin: 'com.google.protobuf' // Apply the protobuf plugin after specifying it in the buildscript
-apply plugin: 'kotlin-android'
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
-
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('release-keystore.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id "com.google.protobuf" version "0.9.1"
 }
 
 def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("local.properties")
+def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
+    localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode", "1")
-def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0")
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
 android {
-    namespace = "com.example.modernlogintute"
-    compileSdkVersion 34
+    namespace "com.example.modernlogintute"
+    compileSdkVersion 34  // Updated to SDK 34
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/kotlin'
+            proto.srcDirs += 'src/main/proto'
+        }
     }
 
     defaultConfig {
-        applicationId = "com.example.modernlogintute"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
+        applicationId "com.example.modernlogintute"
+        minSdkVersion 21
+        targetSdkVersion 34  // Updated to SDK 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -76,25 +83,32 @@ android {
     }
 }
 
+flutter {
+    source = "$projectDir/../.."
+}
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.13.2'
-    // Ensure protobuf dependencies are correctly declared
-    implementation 'com.google.protobuf:protobuf-java:3.11.0'
+    implementation 'com.google.protobuf:protobuf-java:3.21.12'
+    implementation 'io.grpc:grpc-okhttp:1.53.0'
+    implementation 'io.grpc:grpc-protobuf-lite:1.53.0'
+    implementation 'io.grpc:grpc-stub:1.53.0'
+    implementation project(':flutter_blue')
 }
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.11.0'
+        artifact = 'com.google.protobuf:protoc:3.21.7'
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.53.0'
         }
     }
     generateProtoTasks {
-        all().each { task ->
+        all().configureEach { task ->
             task.builtins {
                 java {
                     option 'lite'
@@ -106,5 +120,11 @@ protobuf {
                 }
             }
         }
+    }
+}
+
+configurations {
+    all {
+        exclude group: 'com.google.protobuf', module: 'protobuf-javalite'
     }
 }

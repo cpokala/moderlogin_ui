@@ -1,25 +1,4 @@
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' } 
-        jcenter()
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.namespace == "com.android.application") {
-                useModule("com.android.tools.build:gradle:${requested.version}")
-            } else if (requested.id.namespace == "com.google.gms.google-services") {
-                useModule("com.google.gms:google-services:${requested.version}")
-            } else if (requested.id.namespace == "org.jetbrains.kotlin.android") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
-            }
-        }
-    }
-}
-
-buildscript {
     def flutterSdkPath = {
         def properties = new Properties()
         file("local.properties").withInputStream { properties.load(it) }
@@ -28,26 +7,31 @@ buildscript {
         return flutterSdkPath
     }()
 
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.4'
+    plugins {
+        id 'com.android.application' version '7.3.0'
+        id 'com.android.library' version '7.3.0'
+        id 'org.jetbrains.kotlin.android' version '1.7.10'
+        id 'com.google.gms.google-services' version '4.3.15'
+        id 'com.google.protobuf' version '0.8.18'
     }
 }
 
-plugins {
-    id "com.android.application" version "7.3.0" apply false
-    // START: FlutterFire Configuration
-    id "com.google.gms.google-services" version "4.3.15" apply false
-    // END: FlutterFire Configuration
-    id "org.jetbrains.kotlin.android" version "1.7.10" apply false
-}
+include ':app', ':flutter_blue'
 
+def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
+def properties = new Properties()
 
-include ":app"
+assert localPropertiesFile.exists()
+localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
+
+def flutterSdkPath = properties.getProperty("flutter.sdk")
+assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"

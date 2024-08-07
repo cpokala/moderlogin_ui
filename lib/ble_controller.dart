@@ -36,27 +36,22 @@ class BleController extends GetxController {
     try {
       await device.connect(timeout: const Duration(seconds: 15));
 
-      device.state.listen((state) {
-        switch (state) {
-          case BluetoothDeviceState.connecting:
-            // Handle connecting state if needed
-            break;
-          case BluetoothDeviceState.connected:
-            // Handle connected state if needed
-            break;
-          case BluetoothDeviceState.disconnected:
-            // Handle disconnected state if needed
-            break;
-          default:
-            // Handle other states if needed
-            break;
-        }
-      });
-    } catch (e) {
-      // Handle connection error
-      Get.snackbar(
-          'Connection Error', 'Failed to connect to device: ${device.name}');
-    }
+    device.state.listen((state) {
+      switch (state) {
+        case BluetoothDeviceState.connecting:
+          // "Device Connecting to: ${device.name}"
+          break;
+        case BluetoothDeviceState.connected:
+          // "Device Connected: ${device.name}"
+          break;
+        case BluetoothDeviceState.disconnected:
+          // "Device Disconnected"
+          break;
+        default:
+          // "Device State Changed: $state"
+          break;
+      }
+    });
   }
 
   Stream<List<ScanResult>> get scanResults => ble.scanResults;

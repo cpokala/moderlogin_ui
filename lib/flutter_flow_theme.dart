@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class FlutterFlowTheme {
   static ThemeData of(BuildContext context) {
+    
     return Theme.of(context).copyWith(
       colorScheme: Theme.of(context).colorScheme.copyWith(
         primary: const Color(0xFF4B39EF),
@@ -122,4 +123,72 @@ class FlutterFlowTheme {
       ),
     );
   }
+
+  // Define the colors that are being used in the code but are missing in the theme
+  static Color get primaryText => const Color(0xFF101213);
+  static Color get secondaryText => const Color(0xFF57636C);
+  static Color get primaryBackground => const Color(0xFFFFFFFF);
+  static Color get secondaryBackground => const Color(0xFFF1F4F8);
+  static Color get alternate => const Color(0xFF39D2C0);
+  static Color get primary => const Color(0xFF4B39EF);
+  static Color get secondary => const Color(0xFF39D2C0);
+  static Color get tertiary => const Color(0xFFEE8B60);
+ 
+
+  // Add getters for the text styles
+  static TextStyle get headlineLarge => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF101213),
+        fontSize: 32,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
+      );
+
+  static TextStyle get headlineMedium => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF101213),
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0,
+      );
+
+  static TextStyle get labelLarge => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF57636C),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1.25,
+      );
+
+  static TextStyle get labelMedium => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF57636C),
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1.5,
+      );
+
+  static TextStyle get bodyLarge => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF101213),
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+        letterSpacing: 0.5,
+      );
+
+  static TextStyle get bodyMedium => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF101213),
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        letterSpacing: 0.25,
+      );
+
+  static TextStyle get titleSmall => const TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF57636C),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+      );
 }

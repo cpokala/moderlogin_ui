@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:modernlogintute/ble_controller.dart';
 import 'package:modernlogintute/pages/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+
+
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -58,8 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             return Card(
                               elevation: 2,
                               child: ListTile(
-                                title: Text(data.device.name),
-                                subtitle: Text(data.device.id.id),
+                                title: Text(data.device.platformName),
+                                subtitle: Text(data.device.remoteId.toString()),
                                 trailing: Text(data.rssi.toString()),
                                 onTap: () => controller.connectToDevice(data.device),
                               ),

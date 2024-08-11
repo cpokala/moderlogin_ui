@@ -107,9 +107,6 @@ flutter:
 
   assets:
     - lib/images/
-    - assets/images/
-    - assets/videos/
-    - assets/audios/
-    - assets/lottie_animations/
-    - assets/rive_animations/
-    - assets/pdfs/
+    - C:\modernlogintute\lib\images\loginpage_alleralerticon.png
+    - C:\modernlogintute\lib\images\page1_image1.png
+    - C:\modernlogintute\lib\images\page1_image2.png

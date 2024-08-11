@@ -247,7 +247,7 @@ class _Page1WidgetState extends State<Page1Widget> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.asset(
-                            'assets/images/images.jpeg',
+                            'lib/images/page1_image2.png',
                             width: 300,
                             height: 200,
                             fit: BoxFit.cover,
@@ -280,7 +280,7 @@ class _Page1WidgetState extends State<Page1Widget> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.asset(
-                            'assets/images/Feb-24-webinar-thumbnail-Building-community-in-a-divided-world-300x249.jpg',
+                            'lib/images/page1_image1.png',
                             width: 300,
                             height: 200,
                             fit: BoxFit.cover,

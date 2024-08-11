@@ -31,41 +31,42 @@ class BleController extends GetxController {
 
       _scanResultsList.clear();
 
-     FlutterBluePlus.startScan(timeout: const Duration(seconds: 50)).listen((result) {
-  _scanResultsList.add(result);
-  _scanResultsController.sink.add(_scanResultsList);
-});
+      FlutterBluePlus.scanResults.listen((results) {
+        _scanResultsList.addAll(results);
+        _scanResultsController.add(_scanResultsList);
+      });
 
+      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 50));
 
       await Future.delayed(const Duration(seconds: 50));
-      FlutterBluePlus.stopScan();
+      await FlutterBluePlus.stopScan();
     }
   }
 
   Future<void> connectToDevice(BluetoothDevice device) async {
-    if (device.isConnected) {
-      logger.i("Device already connected: ${device.platformName}");
-      setupListeners(device);
-      return;
-    }
-
-    try {
-      await device.connect();
-      logger.i("Device connected: ${device.platformName}");
-      setupListeners(device);
-    } on TimeoutException {
-      logger.e("Connection timed out. Retrying...");
-      await device.disconnect();
-    }
+  if (device.isConnected) {
+    logger.i("Device already connected: ${device.platformName}");
+    setupListeners(device);
+    return;
   }
 
+  try {
+    await device.connect();
+    logger.i("Device connected: ${device.platformName}");
+    setupListeners(device);
+  } on TimeoutException {
+    logger.e("Connection timed out. Retrying...");
+    await device.disconnect();
+  } catch (e) {
+    logger.e("Error connecting to device: $e");
+  }
+}
   void setupListeners(BluetoothDevice device) {
     logger.d("Setting up listeners");
     device.discoverServices().then((services) {
       for (var service in services) {
         if (service.uuid.toString().toLowerCase() == "db450001-8e9a-4818-add7-6ed94a328ab4") {
           logger.d("Service discovered: ${service.uuid}");
-          // Subscribe to characteristics here...
           subscribeToCharacteristic(service, "db450002-8e9a-4818-add7-6ed94a328ab4", _updateAirQuality);
           subscribeToCharacteristic(service, "db450003-8e9a-4818-add7-6ed94a328ab4", _updateEnvironmental);
           subscribeToCharacteristic(service, "db450004-8e9a-4818-add7-6ed94a328ab4", _updateStatus);
@@ -123,18 +124,15 @@ class BleController extends GetxController {
   }
 
   void subscribeToCharacteristic(BluetoothService service, String characteristicId, void Function(List<int> value) updateFunction) async {
-  try {
-    
-    var characteristic = service.characteristics.firstWhere(
-      (c) => c.uuid.toString().toLowerCase() == characteristicId.toLowerCase(),
-      orElse: () => throw Exception('Characteristic $characteristicId not found')
-    );
-    // Now subscribe to the 'lastValueStream' of the characteristic
-    characteristic.lastValueStream.listen(updateFunction);
-  } catch (e) {
-    logger.e("Error subscribing to characteristic: $characteristicId, Error: $e");
+    try {
+      var characteristic = service.characteristics.firstWhere(
+        (c) => c.uuid.toString().toLowerCase() == characteristicId.toLowerCase(),
+        orElse: () => throw Exception('Characteristic $characteristicId not found')
+      );
+      await characteristic.setNotifyValue(true);
+      characteristic.lastValueStream.listen(updateFunction);
+    } catch (e) {
+      logger.e("Error subscribing to characteristic: $characteristicId, Error: $e");
+    }
   }
-}
-
-
 }

@@ -145,7 +145,7 @@ class _LoginpageWidgetState extends State<LoginpageWidget>
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.asset(
-                          'assets/images/DALLE_2024-06-19_17.05.21_-_Create_a_soft_and_soothing_AI-generated_icon_for_an_app_named_AllerAlert_that_focuses_on_allergies_and_breathing._The_icon_should_feature_stylized_l.webp',
+                          'lib/images/loginpage_alleralerticon.png',
                           height: 231,
                           fit: BoxFit.cover,
                         ),
